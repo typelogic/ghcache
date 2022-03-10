@@ -23,11 +23,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
+      id: setupnodecache
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
     - name: Install npm dependencies
+      if: steps.setupnodecache.outputs.cache-hit != 'true'
       run: npm install
 
     - run: npm ci
